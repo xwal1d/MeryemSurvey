@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meryem's Special Survey</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #ffeff5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #ff69b4;
+        }
+        .intro, .survey, .survey-intro {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #ff1493;
+        }
+        .question {
+            margin-top: 20px;
+        }
+        .answer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .answer-btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+        }
+        .yes-btn {
+            background-color: #4caf50;
+        }
+        .no-btn {
+            background-color: #f44336;
+            position: relative;
+        }
+        .no-btn:hover {
+            position: absolute;
+            left: calc(50% - 80px);
+            animation: move 0.5s;
+        }
+        @keyframes move {
+            from {left: 0;}
+            to {left: calc(50% - 80px);}
+        }
+        .hidden-responses {
+            display: none;
+            background-color: #f3f3f3;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro">
+        <h1>Hello Meryem!</h1>
+        <p>I'm Walid, and I created this website especially for you. I just wanted you to know that you are the most gorgeous girl my eyes have ever seen, and you have such an amazing and beautiful soul. You bring light to my life, Meryama l Ghzala! 🌸 I hope this little page makes you smile.</p>
+    </div>
+
+    <!-- Survey Intro Section -->
+    <div class="survey-intro">
+        <h2>Are you ready to take a cute survey?</h2>
+        <button class="btn" onclick="startSurvey()">Yes, let's go!</button>
+    </div>
+
+    <!-- Survey Section -->
+    <div class="survey" id="survey" style="display: none;">
+        <h2>Meryem's Cute Survey</h2>
+
+        <div class="question">
+            <h3>1. Are you gorgeous?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>2. Do you like anyone?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>3. Are you down to go on dates if someone asked you?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>4. Do you enjoy talking to Walid?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <!-- Additional Questions -->
+        <div class="question">
+            <h3>5. Do you believe you are kind-hearted?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>6. Would you consider yourself intelligent?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>7. Do you think Walid is a nice person?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); nextQuestion()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div class="question">
+            <h3>8. Are you having fun with this survey?</h3>
+            <div class="answer-buttons">
+                <button class="answer-btn yes-btn" onclick="recordResponse('Yes'); finishSurvey()">Yes</button>
+                <button class="answer-btn no-btn" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hidden Responses Section -->
+    <div id="responses-section" class="hidden-responses">
+        <h2>Meryem's Responses</h2>
+        <ul id="responses-list"></ul>
+    </div>
+    <button id="show-responses-btn" onclick="showResponses()" class="btn" style="display:none;">Show Responses</button>
+
+    <!-- JavaScript for Survey Interaction -->
+    <script>
+        let responses = [];
+
+        function startSurvey() {
+            document.querySelector(".survey-intro").style.display = "none";
+            document.getElementById("survey").style.display = "block";
+        }
+
+        function recordResponse(answer) {
+            responses.push(answer);
+        }
+
+        function nextQuestion() {
+            alert("Good choice! On to the next question!");
+        }
+
+        function dodge() {
+            alert("Nope! The only answer is YES, Meryem! 💖");
+        }
+
+        function finishSurvey() {
+            document.getElementById("survey").style.display = "none";
+            alert("Thank you, Meryem, for answering!");
+            document.getElementById("show-responses-btn").style.display = "inline-block";
+        }
+
+        function showResponses() {
+            const responsesSection = document.getElementById("responses-section");
+            responsesSection.style.display = "block";
+
+            const responsesList = document.getElementById("responses-list");
+            responsesList.innerHTML = '';
+            responses.forEach((response, index) => {
+                responsesList.innerHTML += `<li>Question ${index + 1}: ${response}</li>`;
+            });
+        }
+    </script>
+
+</body>
+</html>
